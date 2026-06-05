@@ -31,3 +31,11 @@ fn powers_mod(base: u64, exp: u64, mod_n: u64) -> Vec<u64> {
 
     pows
 }
+
+// for a set mod p where p is prime, we can calculate the modular inverse for
+// an element a by doing a^p-2. From fermat little theorem we know that
+// a^p-1 ≡ 1 (mod p) so => a * a^p-2 ≡ 1 (mod p) i.e a^p-2 is the modular
+// inverse of a
+fn mod_inverse(element: u64, mod_n: u64) -> u64 {
+    exp_alg(element, mod_n - 2, mod_n)
+}
