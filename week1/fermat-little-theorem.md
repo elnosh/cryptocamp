@@ -25,8 +25,8 @@ This then implies that $i \equiv j \pmod{p}$
 
 Therefore:
 
-$ a * 2a * 3a ... * (p-1)a \equiv 1 * 2 * 3 ... p-1 \pmod{p}$
+$a * 2a * 3a ... * (p-1)a \equiv 1 * 2 * 3 ... p-1 \pmod{p}$
 
-$ a^{p-1}(p-1)! \equiv (p-1)! \pmod{p}$
+$a^{p-1}(p-1)! \equiv (p-1)! \pmod{p}$
 
 cancel out and results in $ a^{p-1} \equiv 1 \pmod{p}$
