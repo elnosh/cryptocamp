@@ -40,8 +40,5 @@ A gets decrypted message m
 
 Why is using addition as the group operation with field Zp insecure?
 
-When decrypting in ElGamal, we apply the inverse. When the group operation is multiplication,
-the inverse of a in field Zp depends on the discrete log problem which states that g^a $\equiv x$ (mod p)
-is hard. This requires multiplying g a number of times.
-
-In the case of addition as the group operation, the inverse of a number a is -a. This is not hard to compute.
+If using addition as the group operation, Elgamal is insecure because computing the private
+key for A where A = g*a only involves dividing by g which is known.
