@@ -1,84 +1,157 @@
 ### Exercise 1
+
+Let n be a whole number. Using proof by contrapositive, show that
+if n^2 is a multiple of 3, then n is a multiple of 3. State clearly what P and Q are, what
+their negations are, and where in your argument you use the assumption that the conclusion
+is false. (Hint: every whole number can be written as 3k, 3k + 1, or 3k + 2.) Optional fun
+extension: Can you generalize the example above and the result and proof of this exercise?
+
+Assumption (P) = n^2 is a multiple of 3
+Conclusion (Q) = n is a multiple of 3
+
+The statement P => Q is:
+If n^2 is a multiple of 3, then n is a multiple of 3.
+
+
+To prove by contrapositive, we prove that if n is not a multiple of 3, then n^2 is not a multiple of 3.
+That is: ¬Q ⇒ ¬P
+
+if n is not a multiple of 3 then n = 3k + 1 or n = 3k + 2 for some k
+
+if n = 3k + 1:
+n^2 = (3k + 1)^2
+n^2 = 9k^2 + 6k + 1
+and 9k^2 + 6k + 1 is not a multiple of 3
+
+if n = 3k + 2:
+n^2 = (3k + 2)^2
+n^2 = 9k^2 + 12k + 4
+and 9k^2 + 12k + 4 is not a multiple of 3
+
+This proof that if n is not a multiple of 3 then n^2 is not a multiple of 3 proves the original statement
+that if n^2 is a multiple of 3, then n is a multiple of 3.
+
+
+-------------------------------------------------------------------------------
+
+### Exercise 2
+
+Warm-up reduction. Recall the Diffie-Hellman setup, where two parties have
+public keys X = g^x and Y = g^y and their shared secret is Z = g^x·y . Suppose someone hands
+you an efficient “magic box” that solves the discrete log problem: given any group element g^a
+it returns a. Using this box as a subroutine, describe an efficient procedure that, given only
+X = g^x and Y = g^y (but not x or y), computes the Diffie-Hellman shared secret Z = g^x·y .
+Then state, in one sentence, which implication between assumptions you have just informally
+proven via its contrapositive.
+
+
+Using the given X = g^x, we can query the DL-solver and give X as input to get x as output.
+With the output x from the DL-solver and the given Y = g^y we can perform Y^x which will
+result in the shared secret Z = g^xy because (g^y)^x = g^xy.
+
+It has been proven that if the Diffie-Hellman (DH) key exchange is hard, then the
+DL is hard via the contrapositive which is that if the DL is easy, then the DH key exchange
+is easy.
+
+
+-------------------------------------------------------------------------------
+
+### Exercise 3
+
 Let G be an abelian group with an element, g ∈ G, of prime order n. A
 Schnorr signature of a message, m, by a private key, x ∈ Z/nZ, is a pair (s, R) such that
-s = k + H(R, m) · x ∈ Z/nZ and R = g k ∈ G is the nonce (k is a random element of Z/nZ
+s = k + H(R, m) · x ∈ Z/nZ and R = g^k ∈ G is the nonce (k is a random element of Z/nZ
 generated for this signature). Intuitively, this works because s commits to the message using
 a hash, uses the private key, but it does not reveal the private key because of the random
 value k. A Schnorr signature can be verified by checking the equation g^s == R · X H(R,m),
-where X = g x is the signer’s public key.
+where X = g^x is the signer’s public key.
 
 Use proof by reduction to show that if we assume that the discrete log problem is hard in G,
 then we can conclude that it is hard to forge two Schnorr signatures for the same nonce and
-key, that is, if we are given a public key X = g x and nonce R (without being given x or k) it
+key, that is, if we are given a public key X = g^x and nonce R (without being given x or k) it
 is hard to compute two different messages m1 and m2 and values s1 and s2 such that (s1 , R)
 and (s2 , R) are valid signatures for X of m1 and m2 , respectively.
 
 
 Answer:
 
-To prove by reduction: if forging two Schnorr signatures is easy, then the DL problem is easy.
+The implication:
 
-To create a valid Schnorr signature we need to generate a (s, R) pair such that g^s == R · X^H(R,m)
-where s = k + H(R, m) · x
+P = Forging two Schnorr signatures for the same nonce and key is hard
+Q = Discrete Log (DL) problem is hard
 
-The Discrete Log (DL) assumption states that given X where X = g^x for a Group G and generator g, it is hard
-to compute x.
+P => Q
+
+If forging two Schnorr signatures for the same nonce and key is hard, then
+then the DL problem is hard.
+
+To prove by reduction:
+if the DL problem is easy, then forging two Schnorr signatures is easy.
+
+To create a valid Schnorr signature for a message m and nonce R we need to generate a (s, R) pair
+such that g^s == R · X^H(R,m) where s = k + H(R, m) · x
 
 R, X and H(R, m) are publicly known. Forging a Schnorr signature would require generating s with knowledge
-of private key x which is not publicly known. To know x, we would need to compute the discrete logarithm of
-X to the base g. Thus, if it's easy to forge a Schnorr signature, then the DL problem is easy.
+of private key x. Assume we can easily compute x from X, then we can easily create a valid Schnorr signature
+for X and message m with nonce R. With knowledge of private key x, we can create another valid Schnorr signature
+for a message m2 and nonce R.
 
 
+-------------------------------------------------------------------------------
 
-### Exercise 2
+### Exercise 4
 
 Use proof by reduction and the definitions above to informally show that
-(a) If the DDH assumption holds, then the CDH assumption holds.
+
+* (a) If the DDH assumption holds, then the CDH assumption holds.
 
 Computation Diffie-Hellman (CDH) assumption states that it is "hard" to compute Z if given X and Y where
 X = g^x, Y = g^Y and Z = g^xy
 
-More formally:
+Decisional Diffie-Hellman (DDH) assumption states that it is "hard" to distinguish between a
+Diffie-Hellman shared secret and a truly random group element.
 
-Adv (cdh) (λ) := Pr[CDH (λ) = true]
+Proof by reduction:
+If CDH does not hold and there is a non-negligible advantage for an adversary program A to solve it, then DDH does not
+hold and there is non-negligible advantage for a program A' to solve DDH.
 
-Adv = advantage an adversary has
-Pr = probability function
-And we say that the assumption does holds if the value of `Adv` is "negligible".
+suppose we have a program A with non-negligible advantage in CDH^A(λ), we can build a program A'
+that takes inputs:
+λ = Key size
+Public Keys -> X = g^x and Y = g^y
+Z0 = random group element
 
-Decisional Diffie-Hellman assumption states that it is "hard" to distinguish between a Diffie-Hellman shared
-secret (i.e Z) and a truly random group element.
+and performs the following:
 
-Proof:
-Assume Computational Diffie-Hellman assumption does not hold and it is easy to compute Z if given X and Y.
-If we can easily compute the shared secret Z if given X and Y then we would easily be able to distinguish it
-from a truly random group element.
+Given public keys X and Y solve CDH by using program A with public keys and key size as inputs A(X, Y, λ)
+that will return Z which is the shared secret between X and Y.
 
-Using the more formal definition from above:
-If `Pr[CDH (λ) = true]` is a non-negligible value and we can compute the Diffie-Hellman shared key then we can
-distinguish it from a truly random group element.
+With non-negligible probability of calculating the shared secret Z (by using program A), our program A'
+can compare the calculated Z with the random element Z0 given as input and produce the same Z0 as output.
 
-
-(b) If The CDH assumption holds, then the DL assumption holds.
-In order to solve this part, you may use two facts that we will prove later (though it is
-possible to do this exercise without):
-    (1) If you have two independent events A and B, then Pr [A and B] = Pr [A] · Pr [B].
-    (2) If F (λ) is not negligible, then F (λ)2 is also not negligible.
+This adversary program A' has a non-negligible advantage in DDH.
 
 
-The Discrete Log (DL) as stated above or can also be stated more formally as:
-Adv (dl) (λ) := Pr[DL (λ) = true]
+* (b) If the CDH assumption holds, then the DL assumption holds.
 
-And we say that the DL assumption holds if `Adv` from the probability function is negligible.
+Proof by reduction:
 
-Proof:
+If the DL does not hold and there is a non-negligible advantage for an adversary program A to solve it, then
+CDH does not hold and there is a non-negligible advantage for a program A' to solve CDH.
 
-Assume that the DL assumption does not hold and we can "easily" compute x from a given X where X = g^x for group G.
+Suppose we have a program A that takes as input a public key X and the key size λ and has a non-negligible
+advantage in DL, we can build a program A' with a non-negligible advantage in solving CDH that takes two
+public keys X and Y and key size λ.
 
-Then the Computational Diffie-Hellman (CDH) assumption does not hold because given two public keys X and Y
-we can compute their private keys x and y such that X = g^x and Y = g^y and derive the shared Diffie-Hellman
-key Z = g^xy
+Program A' will do the following:
+use program A with public key X and key size as input A(X, λ) to get private x where X = g^x.
+With knowledge of x, it can them compute Y^x and return the shared secret Z = g^xy.
 
-We do not need to compute both x and y, we can only compute one of x or y and use the counterpart
-public key to derive the shared key Z.
+Using program A we can build this program A' that has a non-negligible advantage in CDH to compute
+the shared key between two public keys.
+
+(Hint: for each part, start by writing “suppose A is a program with non-negligible advantage
+in the easier-to-attack game,” then describe the program A′ you build and which game it
+attacks. For (a), think about what an attacker that can compute Z lets you do in a game
+that only asks you to distinguish Z from random.)
 
