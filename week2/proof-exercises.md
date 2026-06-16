@@ -76,32 +76,39 @@ Use proof by reduction to show that if we assume that the discrete log problem i
 then we can conclude that it is hard to forge two Schnorr signatures for the same nonce and
 key, that is, if we are given a public key X = g^x and nonce R (without being given x or k) it
 is hard to compute two different messages m1 and m2 and values s1 and s2 such that (s1 , R)
-and (s2 , R) are valid signatures for X of m1 and m2 , respectively.
-
+and (s2, R) are valid signatures for X of m1 and m2, respectively.
 
 Answer:
 
 The implication:
 
-P = Forging two Schnorr signatures for the same nonce and key is hard
-Q = Discrete Log (DL) problem is hard
+P = Discrete Log problem is hard
+Q = Forging two Schnorr signatures for the same nonce and key is hard
 
 P => Q
 
-If forging two Schnorr signatures for the same nonce and key is hard, then
-then the DL problem is hard.
+If the DLP is hard, then forging two Schnorr signatures for the same nonce and key is hard
 
 To prove by reduction:
-if the DL problem is easy, then forging two Schnorr signatures is easy.
+if forging two Schnorr signatures is easy, DLP is easy.
 
 To create a valid Schnorr signature for a message m and nonce R we need to generate a (s, R) pair
 such that g^s == R · X^H(R,m) where s = k + H(R, m) · x
 
-R, X and H(R, m) are publicly known. Forging a Schnorr signature would require generating s with knowledge
-of private key x. Assume we can easily compute x from X, then we can easily create a valid Schnorr signature
-for X and message m with nonce R. With knowledge of private key x, we can create another valid Schnorr signature
-for a message m2 and nonce R.
+If we can generate 2 Schnorr signatures for the same nonce and key, we have:
+s1 = k + H(R, m1) * x and s2 = k + H(R, m2) * x
 
+call H(R, m1) -> H1 and H(R, m2) -> H2
+
+if subtract the two
+s1 - s2 = k + H1 * x - k - H2 * x
+
+s1 - s2 = x(H1 - H2)
+
+x = s1 - s2 / H1 - H2
+x = (s1 - s2) * (H1 - H2)^-1
+
+where x is the private key i.e DLP is easy
 
 -------------------------------------------------------------------------------
 
